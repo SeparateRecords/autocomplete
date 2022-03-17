@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "publish",
-  description: "",
+  description: "Static site generator for Swift developers",
   subcommands: [
     {
       name: "new",
