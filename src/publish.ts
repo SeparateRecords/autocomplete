@@ -39,7 +39,5 @@ const completionSpec: Fig.Spec = {
       description: "Show help for publish",
     },
   ],
-  // Only uncomment if publish takes an argument
-  // args: {}
 };
 export default completionSpec;
