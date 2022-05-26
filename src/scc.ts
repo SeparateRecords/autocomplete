@@ -18,8 +18,8 @@ function processSccLanguages(out: string): SccLanguages {
     const language = match[1];
     languages.push(language);
 
-    const extensions = match[2].split(",");
-    for (const extension of extensions) {
+    const extensionsArray = match[2].split(",");
+    for (const extension of extensionsArray) {
       extensions[extension] = language;
     }
   }
