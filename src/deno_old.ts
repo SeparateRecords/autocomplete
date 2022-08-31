@@ -4,11 +4,11 @@ import {
   generateLintRules,
   generateTasks,
   generateVersions,
-} from "./deno/generators";
+} from "./deno_help/generators";
 
 const completion: Fig.Spec = {
   name: "deno",
-  description: "A modern JavaScript and TypeScript runtime",
+  description: "A secure JavaScript and TypeScript runtime",
   subcommands: [
     {
       name: "bench",
@@ -26,6 +26,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -34,37 +35,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -87,76 +92,76 @@ const completion: Fig.Spec = {
         {
           name: "--allow-read",
           description: "Allow file system read access",
+          requiresSeparator: true,
           args: {
             name: "allow-read",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-write",
           description: "Allow file system write access",
+          requiresSeparator: true,
           args: {
             name: "allow-write",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-net",
           description: "Allow network access",
+          requiresSeparator: true,
           args: {
             name: "allow-net",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-env",
           description: "Allow environment access",
+          requiresSeparator: true,
           args: {
             name: "allow-env",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-run",
           description: "Allow running subprocesses",
+          requiresSeparator: true,
           args: {
             name: "allow-run",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-ffi",
           description: "Allow loading dynamic libraries",
+          requiresSeparator: true,
           args: {
             name: "allow-ffi",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -169,11 +174,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -186,11 +191,11 @@ const completion: Fig.Spec = {
         {
           name: "--ignore",
           description: "Ignore files",
+          requiresSeparator: true,
           args: {
             name: "ignore",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--filter",
@@ -256,7 +261,8 @@ const completion: Fig.Spec = {
         },
         {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
         },
         {
           name: "--no-clear-screen",
@@ -306,6 +312,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -314,37 +321,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -389,7 +400,8 @@ const completion: Fig.Spec = {
         },
         {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
         },
         {
           name: "--no-clear-screen",
@@ -436,6 +448,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -444,37 +457,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -552,6 +569,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -561,13 +579,13 @@ const completion: Fig.Spec = {
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -637,6 +655,9 @@ const completion: Fig.Spec = {
       name: "compile",
       description:
         "UNSTABLE: Compile the script into a self contained executable",
+      parserDirectives: {
+        optionsMustPrecedeArguments: true,
+      },
       options: [
         {
           name: "--import-map",
@@ -650,6 +671,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -658,37 +680,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -711,76 +737,76 @@ const completion: Fig.Spec = {
         {
           name: "--allow-read",
           description: "Allow file system read access",
+          requiresSeparator: true,
           args: {
             name: "allow-read",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-write",
           description: "Allow file system write access",
+          requiresSeparator: true,
           args: {
             name: "allow-write",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-net",
           description: "Allow network access",
+          requiresSeparator: true,
           args: {
             name: "allow-net",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-env",
           description: "Allow environment access",
+          requiresSeparator: true,
           args: {
             name: "allow-env",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-run",
           description: "Allow running subprocesses",
+          requiresSeparator: true,
           args: {
             name: "allow-run",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-ffi",
           description: "Allow loading dynamic libraries",
+          requiresSeparator: true,
           args: {
             name: "allow-ffi",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -793,11 +819,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -823,10 +849,10 @@ const completion: Fig.Spec = {
             name: "target",
             isOptional: true,
             suggestions: [
-              "x86_64-unknown-linux-gnu",
-              "x86_64-pc-windows-msvc",
-              "x86_64-apple-darwin",
-              "aarch64-apple-darwin",
+              { name: "x86_64-unknown-linux-gnu", icon: "fig://icon?type=cpu" },
+              { name: "x86_64-pc-windows-msvc", icon: "fig://icon?type=cpu" },
+              { name: "x86_64-apple-darwin", icon: "fig://icon?type=cpu" },
+              { name: "aarch64-apple-darwin", icon: "fig://icon?type=cpu" },
             ],
           },
         },
@@ -898,12 +924,9 @@ const completion: Fig.Spec = {
       ],
       args: {
         name: "script_arg",
+        isScript: true,
         isVariadic: true,
         template: "filepaths",
-        isScript: true,
-      },
-      parserDirectives: {
-        optionsMustPrecedeArguments: true,
       },
     },
     {
@@ -945,44 +968,44 @@ const completion: Fig.Spec = {
         {
           name: "--ignore",
           description: "Ignore coverage files",
+          requiresSeparator: true,
           args: {
             name: "ignore",
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--include",
           description: "Include source files in the report",
           isRepeatable: true,
+          requiresSeparator: true,
           args: {
             name: "include",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--exclude",
           description: "Exclude source files from the report",
           isRepeatable: true,
+          requiresSeparator: true,
           args: {
             name: "exclude",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--output",
           description: "Output file (defaults to stdout) for lcov",
+          requiresSeparator: true,
           args: {
             name: "output",
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: ["-L", "--log-level"],
@@ -1033,13 +1056,13 @@ const completion: Fig.Spec = {
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: ["-L", "--log-level"],
@@ -1110,6 +1133,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -1118,37 +1142,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -1172,23 +1200,23 @@ const completion: Fig.Spec = {
           name: "--inspect",
           description:
             "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          requiresSeparator: true,
           args: {
             name: "inspect",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect-brk",
           description:
             "Activate inspector on host:port and break at start of user script",
+          requiresSeparator: true,
           args: {
             name: "inspect-brk",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -1201,11 +1229,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -1293,6 +1321,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -1311,12 +1340,12 @@ const completion: Fig.Spec = {
         {
           name: "--ignore",
           description: "Ignore formatting particular source files",
+          requiresSeparator: true,
           args: {
             name: "ignore",
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--options-line-width",
@@ -1364,7 +1393,8 @@ const completion: Fig.Spec = {
         },
         {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
         },
         {
           name: "--no-clear-screen",
@@ -1398,41 +1428,12 @@ const completion: Fig.Spec = {
         isOptional: true,
         template: "filepaths",
         suggestions: [
-          { name: "-", description: "Read from standard input", hidden: true },
-        ],
-      },
-    },
-    {
-      name: "init",
-      description: "Initialize a new project",
-      options: [
-        {
-          name: ["-L", "--log-level"],
-          description: "Set log level",
-          hidden: true,
-          args: {
-            name: "log-level",
-            isOptional: true,
-            suggestions: ["debug", "info"],
+          {
+            name: "-",
+            description: "Read from standard input",
+            hidden: true,
           },
-        },
-        {
-          name: ["-h", "--help"],
-          description: "Print help information",
-        },
-        {
-          name: "--unstable",
-          description: "Enable unstable features and APIs",
-        },
-        {
-          name: ["-q", "--quiet"],
-          description: "Suppress diagnostic output",
-        },
-      ],
-      args: {
-        name: "dir",
-        isOptional: true,
-        template: "folders",
+        ],
       },
     },
     {
@@ -1442,13 +1443,13 @@ const completion: Fig.Spec = {
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--cert",
@@ -1470,23 +1471,19 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
           hidden: true,
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
-          },
-          requiresSeparator: true,
-        },
-        {
-          name: ["-c", "--config"],
-          description: "Specify the configuration file",
-          args: {
-            name: "config",
-            isOptional: true,
-            template: "filepaths",
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
         },
         {
@@ -1507,11 +1504,6 @@ const completion: Fig.Spec = {
             isOptional: true,
             suggestions: ["debug", "info"],
           },
-        },
-        {
-          name: "--no-config",
-          description: "Disable automatic loading of the configuration file",
-          exclusiveOn: ["-c", "--config"],
         },
         {
           name: "--json",
@@ -1539,6 +1531,9 @@ const completion: Fig.Spec = {
     {
       name: "install",
       description: "Install script as an executable",
+      parserDirectives: {
+        optionsMustPrecedeArguments: true,
+      },
       options: [
         {
           name: "--import-map",
@@ -1552,6 +1547,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -1560,37 +1556,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -1613,98 +1613,98 @@ const completion: Fig.Spec = {
         {
           name: "--allow-read",
           description: "Allow file system read access",
+          requiresSeparator: true,
           args: {
             name: "allow-read",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-write",
           description: "Allow file system write access",
+          requiresSeparator: true,
           args: {
             name: "allow-write",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-net",
           description: "Allow network access",
+          requiresSeparator: true,
           args: {
             name: "allow-net",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-env",
           description: "Allow environment access",
+          requiresSeparator: true,
           args: {
             name: "allow-env",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-run",
           description: "Allow running subprocesses",
+          requiresSeparator: true,
           args: {
             name: "allow-run",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-ffi",
           description: "Allow loading dynamic libraries",
+          requiresSeparator: true,
           args: {
             name: "allow-ffi",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect",
           description:
             "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          requiresSeparator: true,
           args: {
             name: "inspect",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect-brk",
           description:
             "Activate inspector on host:port and break at start of user script",
+          requiresSeparator: true,
           args: {
             name: "inspect-brk",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -1717,11 +1717,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -1821,11 +1821,8 @@ const completion: Fig.Spec = {
       args: {
         name: "cmd",
         isVariadic: true,
-        template: "filepaths",
         isScript: true,
-      },
-      parserDirectives: {
-        optionsMustPrecedeArguments: true,
+        template: "filepaths",
       },
     },
     {
@@ -1905,38 +1902,39 @@ const completion: Fig.Spec = {
           name: "--rules-tags",
           description: "Use set of rules with a tag",
           exclusiveOn: ["--rules"],
+          requiresSeparator: true,
           args: {
             name: "rules-tags",
             isOptional: true,
             generators: generateLintRules,
           },
-          requiresSeparator: true,
         },
         {
           name: "--rules-include",
           description: "Include lint rules",
           exclusiveOn: ["--rules"],
+          requiresSeparator: true,
           args: {
             name: "rules-include",
             isOptional: true,
             generators: generateLintRules,
           },
-          requiresSeparator: true,
         },
         {
           name: "--rules-exclude",
           description: "Exclude lint rules",
           exclusiveOn: ["--rules"],
+          requiresSeparator: true,
           args: {
             name: "rules-exclude",
             isOptional: true,
             generators: generateLintRules,
           },
-          requiresSeparator: true,
         },
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -1946,12 +1944,12 @@ const completion: Fig.Spec = {
         {
           name: "--ignore",
           description: "Ignore linting particular source files",
+          requiresSeparator: true,
           args: {
             name: "ignore",
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: ["-L", "--log-level"],
@@ -1978,7 +1976,8 @@ const completion: Fig.Spec = {
         },
         {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
         },
         {
           name: "--no-clear-screen",
@@ -2020,6 +2019,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -2028,37 +2028,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -2082,23 +2086,23 @@ const completion: Fig.Spec = {
           name: "--inspect",
           description:
             "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          requiresSeparator: true,
           args: {
             name: "inspect",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect-brk",
           description:
             "Activate inspector on host:port and break at start of user script",
+          requiresSeparator: true,
           args: {
             name: "inspect-brk",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -2111,11 +2115,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -2129,13 +2133,13 @@ const completion: Fig.Spec = {
           name: "--eval-file",
           description:
             "Evaluates the provided file(s) as scripts when the REPL starts. Accepts file paths and URLs",
+          requiresSeparator: true,
           args: {
             name: "eval-file",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--eval",
@@ -2148,13 +2152,13 @@ const completion: Fig.Spec = {
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: ["-L", "--log-level"],
@@ -2209,6 +2213,9 @@ const completion: Fig.Spec = {
     {
       name: "run",
       description: "Run a JavaScript or TypeScript program",
+      parserDirectives: {
+        optionsMustPrecedeArguments: true,
+      },
       options: [
         {
           name: "--import-map",
@@ -2222,6 +2229,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -2230,37 +2238,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -2283,98 +2295,98 @@ const completion: Fig.Spec = {
         {
           name: "--allow-read",
           description: "Allow file system read access",
+          requiresSeparator: true,
           args: {
             name: "allow-read",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-write",
           description: "Allow file system write access",
+          requiresSeparator: true,
           args: {
             name: "allow-write",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-net",
           description: "Allow network access",
+          requiresSeparator: true,
           args: {
             name: "allow-net",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-env",
           description: "Allow environment access",
+          requiresSeparator: true,
           args: {
             name: "allow-env",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-run",
           description: "Allow running subprocesses",
+          requiresSeparator: true,
           args: {
             name: "allow-run",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-ffi",
           description: "Allow loading dynamic libraries",
+          requiresSeparator: true,
           args: {
             name: "allow-ffi",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect",
           description:
             "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          requiresSeparator: true,
           args: {
             name: "inspect",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect-brk",
           description:
             "Activate inspector on host:port and break at start of user script",
+          requiresSeparator: true,
           args: {
             name: "inspect-brk",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -2387,11 +2399,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -2403,19 +2415,19 @@ const completion: Fig.Spec = {
         },
         {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
           exclusiveOn: ["--inspect", "--inspect-brk"],
+          requiresSeparator: true,
           args: {
             name: "watch",
             isVariadic: true,
             isOptional: true,
-            template: "filepaths",
             generators: {
               template: "filepaths",
               getQueryTerm: ",",
             },
           },
-          requiresSeparator: true,
         },
         {
           name: ["-L", "--log-level"],
@@ -2500,30 +2512,22 @@ const completion: Fig.Spec = {
           },
         ],
       },
-      parserDirectives: {
-        optionsMustPrecedeArguments: true,
-      },
     },
     {
       name: "task",
       description: "Run a task defined in the configuration file",
+      parserDirectives: {
+        optionsMustPrecedeArguments: true,
+      },
       options: [
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
             template: "filepaths",
-          },
-        },
-        {
-          name: "--cwd",
-          description: "Specify the directory to run the task in",
-          args: {
-            name: "cwd",
-            isOptional: true,
-            template: "folders",
           },
         },
         {
@@ -2535,6 +2539,11 @@ const completion: Fig.Spec = {
             isOptional: true,
             suggestions: ["debug", "info"],
           },
+        },
+        {
+          name: "--no-config",
+          description: "Disable automatic loading of the configuration file",
+          exclusiveOn: ["-c", "--config"],
         },
         {
           name: ["-h", "--help"],
@@ -2560,9 +2569,6 @@ const completion: Fig.Spec = {
           isOptional: true,
         },
       ],
-      parserDirectives: {
-        optionsMustPrecedeArguments: true,
-      },
     },
     {
       name: "test",
@@ -2580,6 +2586,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -2588,37 +2595,41 @@ const completion: Fig.Spec = {
         },
         {
           name: "--no-check",
-          description: "Skip type-checking modules",
+          description: "Skip type checking modules",
+          requiresSeparator: true,
           args: {
             name: "no-check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["remote"],
+            suggestions: [
+              {
+                name: "remote",
+                description: "Don't check remote modules",
+              },
+            ],
           },
-          requiresSeparator: true,
         },
         {
           name: "--check",
-          description: "Type-check modules",
+          description: "Type check modules",
           exclusiveOn: ["--no-check"],
+          requiresSeparator: true,
           args: {
             name: "check",
             isVariadic: true,
             isOptional: true,
-            suggestions: ["all"],
           },
-          requiresSeparator: true,
         },
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--lock",
@@ -2641,98 +2652,98 @@ const completion: Fig.Spec = {
         {
           name: "--allow-read",
           description: "Allow file system read access",
+          requiresSeparator: true,
           args: {
             name: "allow-read",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-write",
           description: "Allow file system write access",
+          requiresSeparator: true,
           args: {
             name: "allow-write",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-net",
           description: "Allow network access",
+          requiresSeparator: true,
           args: {
             name: "allow-net",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--unsafely-ignore-certificate-errors",
           description: "DANGER: Disables verification of TLS certificates",
+          requiresSeparator: true,
           args: {
             name: "unsafely-ignore-certificate-errors",
+            description: "Scope ignoring certificate errors to these hosts",
             isVariadic: true,
             isOptional: true,
-            description: "Scope ignoring certificate errors to these hosts",
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-env",
           description: "Allow environment access",
+          requiresSeparator: true,
           args: {
             name: "allow-env",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-run",
           description: "Allow running subprocesses",
+          requiresSeparator: true,
           args: {
             name: "allow-run",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--allow-ffi",
           description: "Allow loading dynamic libraries",
+          requiresSeparator: true,
           args: {
             name: "allow-ffi",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect",
           description:
             "Activate inspector on host:port (default: 127.0.0.1:9229)",
+          requiresSeparator: true,
           args: {
             name: "inspect",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--inspect-brk",
           description:
             "Activate inspector on host:port and break at start of user script",
+          requiresSeparator: true,
           args: {
             name: "inspect-brk",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--location",
@@ -2745,11 +2756,11 @@ const completion: Fig.Spec = {
         {
           name: "--v8-flags",
           description: "Set V8 command line options",
+          requiresSeparator: true,
           args: {
             name: "v8-flags",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--seed",
@@ -2762,23 +2773,23 @@ const completion: Fig.Spec = {
         {
           name: "--ignore",
           description: "Ignore files",
+          requiresSeparator: true,
           args: {
             name: "ignore",
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--fail-fast",
           description:
             "Stop after N errors. Defaults to stopping after first failure",
+          requiresSeparator: true,
           args: {
             name: "fail-fast",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--filter",
@@ -2792,29 +2803,27 @@ const completion: Fig.Spec = {
           name: "--shuffle",
           description:
             "(UNSTABLE): Shuffle the order in which the tests are run",
+          requiresSeparator: true,
           args: {
             name: "shuffle",
             isVariadic: true,
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: "--coverage",
           description: "UNSTABLE: Collect coverage profile data into DIR",
           exclusiveOn: ["--inspect", "--inspect-brk"],
+          requiresSeparator: true,
           args: {
             name: "coverage",
             isOptional: true,
           },
-          requiresSeparator: true,
         },
         {
           name: ["-j", "--jobs"],
           description:
-            "Deprecated: Number of parallel workers, defaults to number of available CPUs when no value is provided. Defaults to 1 when the option is not present",
-          hidden: true,
-          deprecated: { description: "Use --parallel" },
+            "Number of parallel workers, defaults to # of CPUs when no value is provided. Defaults to 1 when the option is not present",
           args: {
             name: "jobs",
             isVariadic: true,
@@ -2885,21 +2894,16 @@ const completion: Fig.Spec = {
         },
         {
           name: "--doc",
-          description: "UNSTABLE: type-check code blocks",
+          description: "UNSTABLE: type check code blocks",
         },
         {
           name: "--allow-none",
           description: "Don't return error code if no test files are found",
         },
         {
-          name: "--parallel",
-          description:
-            "Run test modules in parallel. Parallelism defaults to the number of available CPUs or the value in the DENO_JOBS environment variable",
-          exclusiveOn: ["-j", "--jobs"],
-        },
-        {
           name: "--watch",
-          description: "Watch for file changes and restart automatically",
+          description:
+            "UNSTABLE: Watch for file changes and restart automatically",
           exclusiveOn: ["--no-run", "--coverage"],
         },
         {
@@ -3045,6 +3049,7 @@ const completion: Fig.Spec = {
         {
           name: ["-c", "--config"],
           description: "Specify the configuration file",
+          exclusiveOn: ["--no-config"],
           args: {
             name: "config",
             isOptional: true,
@@ -3072,13 +3077,13 @@ const completion: Fig.Spec = {
         {
           name: ["-r", "--reload"],
           description: "Reload source code cache (recompile TypeScript)",
+          requiresSeparator: true,
           args: {
             name: "reload",
             isVariadic: true,
             isOptional: true,
             template: "filepaths",
           },
-          requiresSeparator: true,
         },
         {
           name: "--cert",
